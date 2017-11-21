@@ -119,7 +119,7 @@ defmodule Base58Check do
   @spec decode58check(String.t()) :: Tuple.t()
   def decode58check(code) do
     decoded_bin = decode58(code) |> :binary.encode_unsigned()
-    payload_size = byte_size(decoded_bin) - 5
+    payload_size = byte_size(decoded_bin) - 8
 
     <<prefix::binary-size(4), payload::binary-size(payload_size), checksum::binary-size(4)>> = decoded_bin
     if generate_checksum(prefix <> payload) == checksum do
