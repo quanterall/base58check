@@ -121,7 +121,7 @@ defmodule Base58Check do
     decoded_bin = decode58(code) |> :binary.encode_unsigned()
     payload_size = byte_size(decoded_bin) - 5
 
-    <<prefix::binary-size(1), payload::binary-size(payload_size), checksum::binary-size(4)>> = decoded_bin
+    <<prefix::binary-size(4), payload::binary-size(payload_size), checksum::binary-size(4)>> = decoded_bin
     if generate_checksum(prefix <> payload) == checksum do
       {prefix, payload}
     else
