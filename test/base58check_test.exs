@@ -7,7 +7,7 @@ defmodule Base58CheckTest do
     assert encode58(0) == ""
     assert encode58(57) == "z"
     assert encode58(1024) == "Jf"
-    assert encode58(123456789) == "BukQL"
+    assert encode58(123_456_789) == "BukQL"
     assert encode58(<<1, 0>>) == "5R"
   end
 
@@ -15,7 +15,8 @@ defmodule Base58CheckTest do
     assert decode58("") == 0
     assert decode58("z") == 57
     assert decode58("Jf") == 1024
-    assert decode58("BukQL") == 123456789
+    assert decode58("BukQL") == 123_456_789
+
     assert_raise ArgumentError, fn ->
       decode58(123)
     end
@@ -25,13 +26,13 @@ defmodule Base58CheckTest do
   @test_base58 "5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn"
 
   test "encode58check/2 accepts integer" do
-    bin = Base.decode16! @test_hex, case: :lower
+    bin = Base.decode16!(@test_hex, case: :lower)
     integer = :binary.decode_unsigned(bin)
     assert encode58check(128, integer) == @test_base58
   end
 
   test "encode58check/2 accepts binary" do
-    data_bin = Base.decode16! @test_hex, case: :lower
+    data_bin = Base.decode16!(@test_hex, case: :lower)
     prefix_bin = :binary.encode_unsigned(128)
     assert encode58check(prefix_bin, data_bin) == @test_base58
   end
